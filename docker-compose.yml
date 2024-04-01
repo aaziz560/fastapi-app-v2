@@ -1,0 +1,40 @@
+version: "3.8"
+services:
+  postgres-container:
+    image: postgres
+    container_name: postgres-container
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: aziz
+      POSTGRES_PASSWORD: aziz
+    volumes:
+      - local_pgdata:/var/lib/postgresql/data
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin4_container
+    restart: always
+    ports:
+      - "8888:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: aziz@gmail.com
+      PGADMIN_DEFAULT_PASSWORD: aziz
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+    depends_on:
+      - postgres-container
+  fastapi:
+    image : lastv
+    container_name : fastapi-container
+    restart: always
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres-container
+   
+
+volumes:
+  local_pgdata:
+  pgadmin-data:
+
