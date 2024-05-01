@@ -157,7 +157,15 @@
                                                 <div class="col-lg-6 mx-auto">
                                                     <div class="p-5">
                                                         <div class="text-center">
+
                                                             <h1 class="h4 text-gray-900 mb-4">Examinez vos demandes</h1>
+                                                            {% if error_message %}
+                                                            <div class="alert alert-danger" role="alert">
+                                                                <ul>
+                                                                    <li>{{ error_message }}</li>
+                                                                </ul>
+                                                            </div>
+                                                            {% endif %}
                                                             <h5 class="text-danger">Pour votre securité, veuillez
                                                                 confirmer votre nom et mot
                                                                 de passe</h5>

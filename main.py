@@ -318,17 +318,37 @@ async def viewrequest(
 
     id_employe = request_result["id_emp"]
     password_from_form = request_result["password"]
-
+    error_message = []
     employe = db.query(models.Employe).filter(models.Employe.id == id_employe).first()
     if (
         not employe
         or employe.password != hashlib.sha256(password_from_form.encode()).hexdigest()
     ):
-        raise HTTPException(status_code=400, detail="Invalid ID or password")
+        # raise HTTPException(status_code=400, detail="Invalid ID or password")
+        error_message.append("ID ou PASSWORD NON VALIDE !")
+
+        return templates.TemplateResponse(
+            "requestsemp.html",
+            {
+                "request": request,
+                "error_message": error_message,
+                "employe": employe,
+            },
+        )
 
     demande = db.query(models.Demand).filter(models.Demand.id_emp == id_employe).first()
     if not demande:
-        raise HTTPException(status_code=404, detail="No request found for this ID")
+        # raise HTTPException(status_code=404, detail="No request found for this ID")
+        error_message.append("No request found for this ID")
+
+        return templates.TemplateResponse(
+            "requestsemp.html",
+            {
+                "request": request,
+                "error_message": error_message,
+                "employe": employe,
+            },
+        )
 
     redirect_url = f"/result/{id_employe}"
     return RedirectResponse(url=redirect_url)
